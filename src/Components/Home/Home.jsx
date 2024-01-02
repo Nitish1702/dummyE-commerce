@@ -8,6 +8,7 @@ import Footer from "../Footer/Footer";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [apiStatus, setApiStatus] = useState("");
+  const [cartItems, setCartItems] = useState([]);
 
   // dropdown
 
@@ -41,6 +42,21 @@ const Home = () => {
     fetchProducts();
   }, []);
 
+
+
+  const handleAddToCart = (product) => {
+    // Your logic to add the product to the cart
+    console.log("Adding to cart:", product);
+    // For simplicity, let's assume you are storing cart items in local storage
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    localStorage.setItem("cart", JSON.stringify([...cartItems, product]));
+  };
+  // const handleAddToCart = (product) => {
+  //   const updatedCart = [...cartItems, product];
+  //   setCartItems(updatedCart);
+  //   localStorage.setItem("cart", JSON.stringify(updatedCart));
+  // };
+
   return (
     <>
       <div>
@@ -58,7 +74,7 @@ const Home = () => {
                 //   <p>Discount Price: ${product.discount_price}</p>
                 //   <img src={product.image} alt={product.title} style={{ width: '100px', height: '100px' }} />
                 // </div>
-                <Card key={product.id} product={product} />
+                <Card key={product.id} product={product} onAddToCart={handleAddToCart} />
               ))}
             </div>
           </div>
@@ -67,6 +83,7 @@ const Home = () => {
             {apiStatus === "error" ? "Error fetching products." : "Loading..."}
           </p>
         )}
+
         <Footer/>
       </div>
     </>

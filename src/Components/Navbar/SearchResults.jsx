@@ -6,7 +6,7 @@ export const SearchResults = ({results}) => {
     <div className='results-list'>
         {
             results.map((result, id) => {
-                return <div key={id}>{result.name}</div>
+                return <div key={id}>{result.title}</div>
             })
         }
 

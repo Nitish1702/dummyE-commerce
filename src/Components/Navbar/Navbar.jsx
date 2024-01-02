@@ -5,11 +5,14 @@ import cart_icn from "../Assets/cart_icn.png";
 import logo1 from "../Assets/logo1.png";
 import { SearchResults } from "./SearchResults";
 
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
+import FilterBox from "./FilterBox";
 
 const Navbar = () => {
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
+  const [showFilterBox, setShowFilterBox] = useState(false);
+
 
   ///searchbar
   const fetchData = (value) => {
@@ -18,14 +21,15 @@ const Navbar = () => {
       .then(async (json) => {
         // console.log(json.products)
         const results = await json.products.filter((product) => {
+          console.log(product.products)
           return (
             product &&
-            product.name &&
-            product.name.toLowerCase().includes(value)
+            product.title &&
+            product.title.toLowerCase().includes(value)
           );
         });
         setResults(results);
-        
+        console.log(results)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -35,9 +39,11 @@ const Navbar = () => {
 
   const handleChange = (value) => {
     setInput(value);
-    fetchData(value);
+    fetchData(value.toLowerCase());
   };
-
+  const toggleFilterBox = () => {
+    setShowFilterBox(!showFilterBox);
+  };
   return (
     <>
       <div className="navbar">
@@ -47,7 +53,7 @@ const Navbar = () => {
         </div>
         <div className="searchbar">
           {/* <SearchResults results={results} /> */}
-          {results.length > 0 && <SearchResults results={results} />}
+          {input!="" && results.length > 0 && <SearchResults results={results} />}
 
           {/* searchbar */}
 
@@ -61,6 +67,10 @@ const Navbar = () => {
             />
           </div>
         </div>
+        <div className="filter-wrapper" onClick={toggleFilterBox}>
+          <FaFilter id="filter-icon" />
+        </div>
+        {showFilterBox && <FilterBox onClose={toggleFilterBox} />}
 
         {/* navbar */}
         <div className="nav-cart">

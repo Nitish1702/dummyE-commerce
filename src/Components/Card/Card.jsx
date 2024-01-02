@@ -17,6 +17,7 @@ const Card = ({ product, onAddToCart }) => {
       <h3>{product.title}</h3>
       {images.length > 0 && (
         <SimpleImageSlider
+
           width={220}
           height={220}
           images={images.map((img) => ({ url: img }))}
